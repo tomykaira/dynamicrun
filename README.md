@@ -8,6 +8,19 @@ Windows (maybe, never tested):
 
     .\gradlew.bat run
 
+# Edit from Eclipse or IntelliJ IDEA
+
+Eclipse:
+
+    ./gradlew eclipse
+
+IDEA:
+
+    ./gradlew idea
+
+These commands generates a project file for each IDE.
+Open that generated file from IDE's "Open" dialog.
+
 # Mechanism
 
 - Using `ToolProvider.getSystemJavaCompiler()` to compile a string into java class.
