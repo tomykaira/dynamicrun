@@ -3,7 +3,7 @@ apply plugin: "idea"
 apply plugin: "application"
 apply plugin: "findbugs"
 
-mainClassName = "io.github.tomykaira.dynamicrun"
+mainClassName = "io.github.tomykaira.dynamicrun.Main"
 
 repositories {
     mavenCentral()
