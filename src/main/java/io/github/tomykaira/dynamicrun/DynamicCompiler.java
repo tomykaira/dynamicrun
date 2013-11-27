@@ -11,25 +11,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class DynamicCompiler {
-    private static final String PACKAGE_NAME = DynamicCompiler.class.getPackage().getName();
     private final Path destinationDirectory;
 
     public DynamicCompiler() throws IOException {
         this.destinationDirectory = Files.createTempDirectory("user-code");
-    }
-
-    /**
-     * Append "package" at first, if not given.
-     * package handling is unstable. need refinement.
-     * @param code original code
-     * @return normalized code
-     */
-    public String normalizeCode(String code) {
-        if (code.startsWith("package ")) {
-            return code;
-        } else {
-            return "package " + PACKAGE_NAME + ";\n" + code;
-        }
     }
 
     /**
@@ -59,12 +44,12 @@ public class DynamicCompiler {
      * Load compiled class.
      * The result must be cached.
      *
-     * @param className
+     * @param codeObject the compiled code object
      * @return the class found in the temporary directory
      * @throws ClassNotFoundException, ClassCastException
      */
-    public Class<? extends Character> compiledCharacterClass(String className) throws ClassNotFoundException, IOException {
+    public Class<? extends Character> compiledCharacterClass(DynamicJavaCodeObject codeObject) throws ClassNotFoundException, IOException {
         URLClassLoader classLoader = new URLClassLoader(new URL[]{ destinationDirectory.toUri().toURL() });
-        return classLoader.loadClass(PACKAGE_NAME + '.' + className).asSubclass(Character.class);
+        return classLoader.loadClass(codeObject.packageName + '.' + codeObject.className).asSubclass(Character.class);
     }
 }

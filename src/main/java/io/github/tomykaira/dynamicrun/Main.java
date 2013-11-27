@@ -2,7 +2,8 @@ package io.github.tomykaira.dynamicrun;
 
 public class Main {
     private static final String testCode =
-            "public class RandomCharacter extends Character {\n" +
+            "package io.github.tomykaira.dynamicrun;\n" +
+                    "public class RandomCharacter extends Character {\n" +
                     "\n" +
                     "    @Override\n" +
                     "    public void walk() {\n" +
@@ -26,10 +27,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         DynamicCompiler compiler = new DynamicCompiler();
-        String code = compiler.normalizeCode(testCode);
-        // "test/test" has no meaning, the last part should equal to the class name (because public)
-        compiler.compileSource(new DynamicJavaCodeObject("test/test/RandomCharacter", code));
-        Character character = compiler.compiledCharacterClass("RandomCharacter").newInstance();
+        DynamicJavaCodeObject codeObject = new DynamicJavaCodeObject(testCode);
+        if (!compiler.compileSource(codeObject)) {
+            throw new RuntimeException("Compilation failed");
+        }
+        Character character = compiler.compiledCharacterClass(codeObject).newInstance();
         for (int i = 0; i < 10; i ++) {
             character.walk();
         }
